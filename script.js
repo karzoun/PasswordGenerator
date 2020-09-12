@@ -1,53 +1,161 @@
-// Assignment Code
-var generateBtn = document.querySelector("#generate");
+//onclick we want to generate a password
+// Array of special characters to be included in password
+var specialCharacters = [
+    '@',
+    '%',
+    '+',
+    '\\',
+    '/',
+    "'",
+    '!',
+    '#',
+    '$',
+    '^',
+    '?',
+    ':',
+    ',',
+    ')',
+    '(',
+    '}',
+    '{',
+    ']',
+    '[',
+    '~',
+    '-',
+    '_',
+    '.'
+];
 
-// Write password to the #password input
-function writePassword() {
-    var password = generatePassword();
-    var passwordText = document.querySelector("#password");
+// Array of numeric characters to be included in password
+var numericCharacters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
-    passwordText.value = password;
+// Array of lowercase characters to be included in password
+var lowerCasedCharacters = [
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'h',
+    'i',
+    'j',
+    'k',
+    'l',
+    'm',
+    'n',
+    'o',
+    'p',
+    'q',
+    'r',
+    's',
+    't',
+    'u',
+    'v',
+    'w',
+    'x',
+    'y',
+    'z'
+];
 
+// Array of uppercase characters to be included in password
+var upperCasedCharacters = [
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F',
+    'G',
+    'H',
+    'I',
+    'J',
+    'K',
+    'L',
+    'M',
+    'N',
+    'O',
+    'P',
+    'Q',
+    'R',
+    'S',
+    'T',
+    'U',
+    'V',
+    'W',
+    'X',
+    'Y',
+    'Z'
+];
+
+var generatePassword = function() {
+    //*****get user input
+    //prompt user and collect user data
+    //types numbers, string, boolean, objects, arrays
+    var length = parseInt(prompt("How many characters do you want?"));
+
+    //check length
+    if (length < 8) {
+        alert("password is too short, it has to be greater than 8");
+        return;
+    }
+    if (length > 128) {
+        alert("password is too long, it has to be less than 128");
+        return;
+    }
+
+    var includeSpecialCharacters = confirm("Do you want Special Charcters?");
+    var includeUppercase = confirm("Do you want Uppercase?");
+    var includeLowercase = confirm("Do you want Lowerscase?");
+    var includeNumbers = confirm("Do you want Numbers?");
+
+    //if user select nothing - handle case
+    while (!includeSpecialCharacters && !includeUppercase && !includeLowercase && !includeNumbers) {
+        alert("you need to selelect something");
+        includeSpecialCharacters = confirm("Do you want Special Charcters?");
+        includeUppercase = confirm("Do you want Uppercase?");
+        includeLowercase = confirm("Do you want Lowerscase?");
+        includeNumbers = confirm("Do you want Numbers?");
+    }
+
+    //build an array of all possbilities
+    var possbilities = [];
+    if (includeSpecialCharacters) {
+        //do this
+        possbilities = possbilities.concat(specialCharacters);
+    }
+    if (includeUppercase) {
+        //do this
+        possbilities = possbilities.concat(upperCasedCharacters);
+    }
+    if (includeLowercase) {
+        //do this
+        possbilities = possbilities.concat(lowerCasedCharacters);
+    }
+    if (includeNumbers) {
+        //do this
+        possbilities = possbilities.concat(numericCharacters);
+    }
+
+    console.log("possbilities", possbilities);
+
+    //generate random password and set length
+    var newPassword = [];
+    for (i = 0; i < length; i++) {
+        //for every index run this code
+        //create a random number less than possibility
+        var randomNumber = Math.floor(Math.random() * possbilities.length);
+        //select a an item from possibility
+        var randomlySelectedPossibility = possbilities[randomNumber];
+        //store random slection into array
+        newPassword.push(randomlySelectedPossibility);
+    }
+
+    console.log("newPassword: ", newPassword);
+
+    //show the random password
+    document.querySelector("#passwordGenratorText").value = newPassword.join('');
 }
-var numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-for (i = 0; i < numbers.length; i++) {
-    text += numbers[i] + "1";
-}
 
-
-// TODO: create the generatePassword function the final passward and the code should live inside the function
-
-// TODO: create a prompt to ask the length of  the password and save it to a value
-
-// TODO: create a confirm to ask the user if they want uppercase char
-
-// TODO: create a confirm to ask the user if they want lowerrcase char
-
-// TODO: create a confirm to ask the user if they want numbers char
-
-
-// TODO: create a confirm to ask the user if they want special char
-
-
-// TODO: after I'm done with the prompt have to create the password 
-
-// TODO: create arrays with all needed char (uppercase , lowerrcase ,numbers ,numbers)
-
-// TODO: create a conditional situation that seems chosen from the confirm to a new collaction
-
-// TODO:  we have to select a specific numdwe of char randomly from our final collation based on the user choice 
-
-//  i can use math.random or math.floor 
-
-// TODO:  create a var  that hold the char that hte user wnat in the password 
-
-// TODO: add validation to make sure atleast one type of char is selected and alert the user if there are no type being selected
-
-// TODO: add validation with a lenght to make sure is between 8 and 128 char
-
-
-
-
-
-// Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
+document.querySelector("#generate").addEventListener("click", generatePassword);
